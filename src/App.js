@@ -36,7 +36,7 @@ function App() {
       </div>
       <Switch>
         <Route exact path="/">
-          <Users users={users} />
+          <Users users={users} setUsers={setUsers} />
         </Route>
         <Route exact path="/rejected">
           <Rejected />

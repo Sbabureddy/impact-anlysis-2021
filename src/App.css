@@ -59,7 +59,6 @@
 
 .card-image {
   border-radius: 50%;
-  height: 80px;
 }
 
 .users-list {
@@ -68,6 +67,7 @@
   flex-flow: wrap;
   align-items: center;
   justify-content: center;
+  min-width: 100vh;
 }
 
 .search-input {

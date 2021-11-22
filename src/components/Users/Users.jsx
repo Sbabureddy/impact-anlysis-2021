@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-const Users = ({ users }) => {
+const Users = ({ users, setUsers }) => {
   const [query, setQuery] = useState("");
 
   const handleChange = (e) => {
@@ -14,9 +14,15 @@ const Users = ({ users }) => {
   const createMarkup = (html) => ({ __html: html });
 
   const renderUsers = filteredUsers.map((user) => (
-    <Link to={`/${user.id}`}>
-      <section key={user.id} className="card">
-        <img src={user.Image} alt={user.name} className="card-image" />
+    <Link to={`/${user.id}`} key={user.id}>
+      <section className="card">
+        <img
+          src={user.Image}
+          alt={user.name}
+          className="card-image"
+          loading="lazy"
+          height="80px"
+        />
         <div
           className="card-content"
           dangerouslySetInnerHTML={createMarkup(
@@ -40,6 +46,26 @@ const Users = ({ users }) => {
         className="search-input"
       />
       <section className="users-list">{renderUsers}</section>
+      <button
+        onClick={() => {
+          const asc = [...filteredUsers].sort((a, b) =>
+            a.name.localeCompare(b.name)
+          );
+          setUsers(asc);
+        }}
+      >
+        Ascending order
+      </button>
+      <button
+        onClick={() => {
+          const asc = [...filteredUsers].sort((a, b) =>
+            b.name.localeCompare(a.name)
+          );
+          setUsers(asc);
+        }}
+      >
+        Desending order
+      </button>
     </>
   );
 };
