@@ -7,29 +7,28 @@ const Users = ({ users }) => {
     setQuery(e.target.value);
   };
 
-  const renderUsers =
-    users &&
-    users.map((user) => (
-      <Link to={`/${user.id}`}>
-        <section key={user.id} className="card">
-          <img src={user.Image} alt={user.name} className="card-image" />
-          <div className="card-content">{user.name}</div>
-        </section>
-      </Link>
-    ));
+  const filteredUsers = !query
+    ? users
+    : users.filter((user) => user.name.match(new RegExp(query, "gi")));
 
-  const renderFilteredUsers = users
-    .filter(
-      (user) => query.length > 0 && user.name.match(new RegExp(query, "gi"))
-    )
-    .map((user) => (
-      <Link to={`/${user.id}`}>
-        <section key={user.id} className="card">
-          <img src={user.Image} alt={user.name} className="card-image" />
-          <div className="card-content">{user.name}</div>
-        </section>
-      </Link>
-    ));
+  const createMarkup = (html) => ({ __html: html });
+
+  const renderUsers = filteredUsers.map((user) => (
+    <Link to={`/${user.id}`}>
+      <section key={user.id} className="card">
+        <img src={user.Image} alt={user.name} className="card-image" />
+        <div
+          className="card-content"
+          dangerouslySetInnerHTML={createMarkup(
+            user.name.replace(
+              new RegExp(query, "gi"),
+              (match) => `<mark style="background: yellow">${match}</mark>`
+            )
+          )}
+        />
+      </section>
+    </Link>
+  ));
 
   return (
     <>
@@ -40,9 +39,7 @@ const Users = ({ users }) => {
         onChange={handleChange}
         className="search-input"
       />
-      <section className="users-list">
-        {query.length > 0 ? renderFilteredUsers : renderUsers}
-      </section>
+      <section className="users-list">{renderUsers}</section>
     </>
   );
 };
